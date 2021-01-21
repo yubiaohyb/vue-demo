@@ -1,7 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" @click="test1" >
+    <ul>
+      <li v-for="(item, index) of itemIds" :key="index" :item="item" :index="index">{{item}}</li>
+    </ul>
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="vue门户测试页面"/>
+    <HelloWorld msg="vue门户测试页面" />
   </div>
 </template>
 
@@ -12,7 +15,35 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  data:function() {
+    return {
+      itemIds:[]
+    }
+  },
+  methods:{
+    test1(){
+      this.$ajax.get("/test1/test1")
+              .then(function(res) {
+                console.log(res.data)
+              })
+              .catch(function (res) {
+                console.log(res)
+              });
+    }
+  },
+  mounted() {
+    var that = this;
+    this.$ajax.get("/test1/li")
+            .then(function(res) {
+              that.$data.itemIds = res.data;
+              console.log(res.data)
+            })
+            .catch(function (res) {
+              console.log(res)
+            });
   }
+
 }
 </script>
 
